@@ -80,3 +80,31 @@ func (c *Cheater) UpdateScore(result int) {
 		c.score += 3
 	}
 }
+
+type Grudger struct {
+	*Info
+	getCheatedOnce bool
+}
+
+func NewGrudger() *Grudger {
+	return &Grudger{
+		Info:           &Info{"Grudger", 0},
+		getCheatedOnce: false,
+	}
+}
+func (g *Grudger) Move() int {
+	if g.getCheatedOnce {
+		return internal.CHEAT
+	}
+	return internal.COOPERATE
+}
+func (g *Grudger) UpdateScore(result int) {
+	if result == internal.COOPERATED {
+		g.score += 2
+	} else if result == internal.CHEATED {
+		g.score += 3
+	} else if result == internal.GET_CHEATED {
+		g.score -= 1
+		g.getCheatedOnce = true
+	}
+}
