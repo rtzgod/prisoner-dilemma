@@ -108,3 +108,48 @@ func (g *Grudger) UpdateScore(result int) {
 		g.getCheatedOnce = true
 	}
 }
+
+type Detective struct {
+	*Info
+	movesPreset      []int
+	movesPointer     int
+	opponentRevenged bool
+	copycatBehavior  *Copycat
+	cheaterBehavior  *Cheater
+}
+
+func NewDetective() *Detective {
+	return &Detective{
+		Info:             &Info{"Detective", 0},
+		movesPreset:      []int{internal.COOPERATE, internal.CHEAT, internal.COOPERATE, internal.COOPERATE},
+		movesPointer:     0,
+		opponentRevenged: false,
+		copycatBehavior:  NewCopycat(),
+		cheaterBehavior:  NewCheater(),
+	}
+}
+func (d *Detective) Move() int {
+	if d.opponentRevenged && d.movesPointer >= len(d.movesPreset) {
+		return d.copycatBehavior.Move()
+	}
+	if d.movesPointer < len(d.movesPreset) {
+		return d.movesPreset[d.movesPointer]
+	}
+	return d.cheaterBehavior.Move()
+}
+func (d *Detective) UpdateScore(result int) {
+	if result == internal.COOPERATED {
+		d.score += 2
+		d.copycatBehavior.opponentMove = internal.COOPERATE
+	} else if result == internal.GET_CHEATED {
+		d.score -= 1
+		d.copycatBehavior.opponentMove = internal.CHEAT
+	} else if result == internal.CHEATED {
+		d.score += 3
+		d.copycatBehavior.opponentMove = internal.COOPERATE
+	}
+	if result == internal.GET_CHEATED && d.movesPointer == 2 {
+		d.opponentRevenged = true
+	}
+	d.movesPointer++
+}
