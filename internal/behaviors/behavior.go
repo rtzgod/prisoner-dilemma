@@ -2,6 +2,7 @@ package behaviors
 
 import (
 	"github.com/rtzgod/prisoner-dilemma/internal"
+	"math/rand"
 )
 
 type Info struct {
@@ -152,4 +153,26 @@ func (d *Detective) UpdateScore(result int) {
 		d.opponentRevenged = true
 	}
 	d.movesPointer++
+}
+
+type Random struct {
+	*Info
+}
+
+func NewRandom() *Random {
+	return &Random{
+		Info: &Info{"Random", 0},
+	}
+}
+func (r *Random) Move() int {
+	return rand.Intn(2)
+}
+func (r *Random) UpdateScore(result int) {
+	if result == internal.COOPERATED {
+		r.score += 2
+	} else if result == internal.GET_CHEATED {
+		r.score -= 1
+	} else if result == internal.CHEATED {
+		r.score += 3
+	}
 }

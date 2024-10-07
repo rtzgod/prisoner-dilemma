@@ -42,7 +42,7 @@ func (g *Game) Sandbox() {
 		"Grudger":    0,
 		"Cheater":    0,
 	}
-	allBehaviors := []Player{behaviors.NewCooperator(), behaviors.NewCopycat(), behaviors.NewDetective(), behaviors.NewGrudger(), behaviors.NewCheater()}
+	allBehaviors := []Player{behaviors.NewCooperator(), behaviors.NewCopycat(), behaviors.NewDetective(), behaviors.NewGrudger(), behaviors.NewCheater(), behaviors.NewRandom()}
 	for i := 0; i < len(allBehaviors)-1; i++ {
 		for j := i + 1; j < len(allBehaviors); j++ {
 			fmt.Println("Match ", matchCounter)
@@ -52,7 +52,7 @@ func (g *Game) Sandbox() {
 			behaviorsScore[p1.BehaviorName()] += p1.GetScore()
 			behaviorsScore[p2.BehaviorName()] += p2.GetScore()
 
-			allBehaviors = []Player{behaviors.NewCooperator(), behaviors.NewCopycat(), behaviors.NewDetective(), behaviors.NewGrudger(), behaviors.NewCheater()}
+			allBehaviors = []Player{behaviors.NewCooperator(), behaviors.NewCopycat(), behaviors.NewDetective(), behaviors.NewGrudger(), behaviors.NewCheater(), behaviors.NewRandom()}
 
 			matchCounter++
 		}

@@ -9,6 +9,7 @@ func main() {
 
 	//p1 := behaviors.NewDetective()
 	//p2 := behaviors.NewGrudger()
+	// g.Play(p1, p2)
 
 	g.Sandbox()
 }
